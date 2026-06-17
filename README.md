@@ -4,6 +4,12 @@
 **Matrícula:** 2024-1599  
 **Plataforma:** PNETLab  
 
+Link video: 
+
+Enlace GitHub: 
+
+
+
 ---
 
 ## Objetivo
@@ -16,7 +22,7 @@ En una VPN basada en políticas, el tráfico que debe ser cifrado se define medi
 
 ## Topología
 
-![Topología de Red](IMAGEN1.png)
+![Topología de Red](Imagenes/IMAGEN1.png)
 
 > Topología implementada en PNETLab. R1 actúa como ISP de tránsito. R2 y R3 son los peers VPN. SW1 y SW2 son los switches de acceso de cada LAN. Linux6, Linux7, VPC8 y VPC9 son los hosts clientes.
 
@@ -210,7 +216,7 @@ write memory
 
 ### 1. Configuración crypto R2 — `show running-config | section crypto`
 
-![R2 show running-config crypto y show crypto isakmp sa](IMAGEN2.png)
+![R2 show running-config crypto y show crypto isakmp sa](Imagenes/IMAGEN2.png)
 
 Se puede observar la configuración completa del crypto en R2:
 - `crypto isakmp policy 10` con AES-256, SHA-256, grupo 14.
@@ -222,9 +228,9 @@ Se puede observar la configuración completa del crypto en R2:
 
 ### 2. R2 — `show crypto ipsec sa` (Fase 2)
 
-![R2 show crypto ipsec sa](IMAGEN3.png)
+![R2 show crypto ipsec sa](Imagenes/IMAGEN3.png)
 
-![R2 show access-lists y show crypto session](IMAGEN4.png)
+![R2 show access-lists y show crypto session](Imagenes/IMAGEN4.png)
 
 El comando `show crypto ipsec sa` confirma el establecimiento de la **Fase 2**:
 - `local ident: 10.15.99.0/255.255.255.0` — red origen protegida.
@@ -239,7 +245,7 @@ El comando `show crypto ipsec sa` confirma el establecimiento de la **Fase 2**:
 
 ### 3. R2 — `show ip route`
 
-![R2 show ip route](IMAGEN5.png)
+![R2 show ip route](Imagenes/IMAGEN5.png)
 
 La tabla de enrutamiento de R2 muestra:
 - `C 10.15.99.0/24` — conectada directamente en `Ethernet0/1` (LAN A).
@@ -250,7 +256,7 @@ La tabla de enrutamiento de R2 muestra:
 
 ### 4. R1 (ISP) — `show ip route`
 
-![R1 show ip route](IMAGEN6.png)
+![R1 show ip route](Imagenes/IMAGEN6.png)
 
 El ISP tiene rutas estáticas hacia ambas LANs privadas:
 - `S 10.15.99.0/24 via 200.1.15.2` — hacia LAN A a través de R2.
@@ -261,7 +267,7 @@ El ISP tiene rutas estáticas hacia ambas LANs privadas:
 
 ### 5. R1 (ISP) — Configuración de interfaces
 
-![R1 show running-config interfaces](IMAGEN7.png)
+![R1 show running-config interfaces](Imagenes/IMAGEN7.png)
 
 Confirma las interfaces del ISP configuradas correctamente:
 - `Ethernet0/0: 200.1.15.1/24` — enlace hacia R2.
@@ -271,7 +277,7 @@ Confirma las interfaces del ISP configuradas correctamente:
 
 ### 6. R3 — `show crypto session`, `show access-lists` y `show crypto isakmp sa`
 
-![R3 show crypto session, access-lists y isakmp sa](IMAGEN8.png)
+![R3 show crypto session, access-lists y isakmp sa](Imagenes/IMAGEN8.png)
 
 Verificación desde el lado de R3:
 - `Session status: UP-ACTIVE` — sesión activa en R3.
@@ -284,7 +290,7 @@ Verificación desde el lado de R3:
 
 ### 7. R3 — `show crypto ipsec sa`
 
-![R3 show crypto ipsec sa](IMAGEN9.png)
+![R3 show crypto ipsec sa](Imagenes/IMAGEN9.png)
 
 Desde R3 se confirma:
 - Crypto map `CMP-1599` activo en `Ethernet0/0`.
@@ -298,7 +304,7 @@ Desde R3 se confirma:
 
 ### 8. R3 — `show ip route`
 
-![R3 show ip route](IMAGEN10.png)
+![R3 show ip route](Imagenes/IMAGEN10.png)
 
 Tabla de enrutamiento de R3:
 - `C 192.168.99.0/24` — conectada directamente en `Ethernet0/1` (LAN B).
@@ -309,7 +315,7 @@ Tabla de enrutamiento de R3:
 
 ### 9. R3 — `show running-config | section crypto`
 
-![R3 show running-config section crypto](IMAGEN11.png)
+![R3 show running-config section crypto](Imagenes/IMAGEN11.png)
 
 Confirma la configuración completa del crypto en R3:
 - `crypto isakmp policy 10` con parámetros idénticos a R2.
@@ -322,7 +328,7 @@ Confirma la configuración completa del crypto en R3:
 
 ### VPC8 (LAN A) → VPC9 (LAN B)
 
-![VPC8 ping 192.168.99.3](IMAGEN12.png)
+![VPC8 ping 192.168.99.3](Imagenes/IMAGEN12.png)
 
 `ping 192.168.99.3` ejecutado desde VPC8 (`10.15.99.3`) hacia VPC9 (`192.168.99.3`):
 - 4 respuestas exitosas con TTL=62.
@@ -333,7 +339,7 @@ Confirma la configuración completa del crypto en R3:
 
 ### VPC9 (LAN B) → VPC8 (LAN A)
 
-![VPC9 ping 10.15.99.3](IMAGEN13.png)
+![VPC9 ping 10.15.99.3](Imagenes/IMAGEN13.png)
 
 `ping 10.15.99.3` ejecutado desde VPC9 (`192.168.99.3`) hacia VPC8 (`10.15.99.3`):
 - 3 respuestas exitosas con TTL=62.
